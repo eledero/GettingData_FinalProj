@@ -1,0 +1,23 @@
+
+
+
+##Variable list
+
+* activity: Row binding of activityTest and activityTrain
+* activityTest: Activity Test Dataset (in descriptive names)
+* activityTrain: Activity Training Dataset (in descriptive names)
+* actLab: Activity descriptive names (e.g. "WALKING", "STANDING")
+* checkNames: Logical indicatinf whether if the column names of mainData contained the words "mean" and "std", but not "meanFreq"
+* headers: Headers for xTrain and xTest
+* mainData: Merge of the subject, measurement, activity and headers dataset, i.e. the "base" dataset from which parts 2 ans 5 vill be achieved.
+* meanStdExtract: Extract of the mean and standard deviation measurements of mainData (i.e. part 2 requirement)
+* subj: Row binding of subjTest and subjTrain
+* subjTest: Subject Test Dataset (in numbers)
+* subjTrain: Subject Training Dataset (in numbers)
+* summData: Mean Summary by subject and activity (i.e. part 5 tidy dataset)
+* x: Row binding of xTest and xTrain
+* xTest: Measurements Test Dataset
+* xTrain: Measurements Training Dataset
+* yTest: Activity Test Dataset (in numbers from 1 to 5)
+* yTrain: Activity Training Dataset (in numbers from 1 to 5)
+
