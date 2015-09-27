@@ -1,0 +1,135 @@
+---
+title: "README"
+output: html_document
+---
+
+
+##Overview of how the script works
+
+First of all, we need to read the data from the original files:
+
+```{r, eval=FALSE}
+headers <- read.table ("./features.txt")
+actLab <- read.table ("./activity_labels.txt")
+
+xTest <- read.table ("./test/X_test.txt")
+yTest <- read.table ("./test/y_test.txt")
+subjTest <- read.table ("./test/subject_test.txt") 
+
+xTrain <- read.table ("./train/X_train.txt")
+yTrain <- read.table ("./train/y_train.txt")
+subjTrain <- read.table ("./train/subject_train.txt")
+```
+
+
+
+Then, we appropriately label the data set with descriptive variable names and merge all the datasets into a main dataset called "mainData":
+
+```{r, eval=FALSE}
+
+names(xTest) <- headers[,2]
+names(xTrain) <- headers[,2]
+
+
+
+
+activityTest <- c()
+activityTrain <- c()
+activity <- c()
+
+for (i in 1: nrow(yTest)){
+
+  activityTest [i] <-  as.character(actLab[yTest[i, 1], 2]) 
+
+}
+
+for (i in 1: nrow(yTrain)){
+  
+  activityTrain [i] <-  as.character(actLab[yTrain[i, 1], 2])
+  
+}
+
+
+for (i in 1: nrow(yTest)){
+  
+  activity[i] <- activityTest[i]  
+  
+}
+
+
+
+for (i in (nrow(yTest)+1):(nrow(yTest) + nrow(yTrain)) ){
+  
+  activity[i] <- activityTrain[i-nrow(yTest)]  
+  
+}
+
+
+
+x <- rbind(data.frame(xTest), data.frame(xTrain))
+
+subj <- rbind(subjTest, subjTrain)
+
+names(subj) <- "subject"
+
+
+mainData <- data.frame(subj, activity, x)
+
+names(f)[1] <- "subject"
+names(f)[2] <- "activity"
+
+```
+
+
+
+
+Then, we extract mean and standard deviation from the main dataset (part 2), i.e. "mainData"
+
+
+```{r, eval=FALSE}
+
+checkNames <- (grepl('mean',names(mainData))|grepl('std',names(mainData)))&(!grepl('meanFreq',names(mainData)))
+
+
+meanStdExtract <- data.frame(subj, activity, mainData[, checkNames])
+
+```
+
+
+Finally, the second, tidy dataset is created with a mean summary of all the variables by subject and activity (part 5):
+
+
+
+```{r, eval=FALSE}
+
+summData <- aggregate(meanStdExtract[3:ncol(meanStdExtract)], 
+                   by = meanStdExtract[c("subject","activity")], FUN=mean)
+
+write.table(summData, "./Final Project/summData.txt", sep="\t", row.name=FALSE)
+
+
+```
+
+
+
+
+##Variable list
+
+* activity: Row binding of activityTest and activityTrain
+* activityTest: Activity Test Dataset (in descriptive names)
+* activityTrain: Activity Training Dataset (in descriptive names)
+* actLab: Activity descriptive names (e.g. "WALKING", "STANDING")
+* checkNames: Logical indicatinf whether if the column names of mainData contained the words "mean" and "std", but not "meanFreq"
+* headers: Headers for xTrain and xTest
+* mainData: Merge of the subject, measurement, activity and headers dataset, i.e. the "base" dataset from which parts 2 ans 5 vill be achieved.
+* meanStdExtract: Extract of the mean and standard deviation measurements of mainData (i.e. part 2 requirement)
+* subj: Row binding of subjTest and subjTrain
+* subjTest: Subject Test Dataset (in numbers)
+* subjTrain: Subject Training Dataset (in numbers)
+* summData: Mean Summary by subject and activity (i.e. part 5 tidy dataset)
+* x: Row binding of xTest and xTrain
+* xTest: Measurements Test Dataset
+* xTrain: Measurements Training Dataset
+* yTest: Activity Test Dataset (in numbers from 1 to 5)
+* yTrain: Activity Training Dataset (in numbers from 1 to 5)
+

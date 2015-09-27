@@ -1,9 +1,3 @@
-### Download files from the web###
-
-url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-
-download.file(url, "datafile.zip")
-
 
 ###Read headers, training set and test dataset 
 
